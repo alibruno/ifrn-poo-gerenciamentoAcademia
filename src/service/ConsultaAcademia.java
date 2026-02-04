@@ -15,10 +15,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ConsultaAcademia implements ConsultaAcademiaInterface {
+    RepositorioAcademia repositorioAcademia = new RepositorioAcademia();
 
     @Override
     public String gerarRelatorioTudo() {
-        return "Total: " + (RepositorioAcademia.alunos.size() + RepositorioAcademia.instrutores.size()) +
+        return "Total: " + (repositorioAcademia.getAlunos().size() + repositorioAcademia.getInstrutores().size()) +
                 "\n-----------------------------------\n" +
                 gerarRelatorioAluno() +
                 "\n-----------------------------------\n" +
@@ -27,12 +28,12 @@ public class ConsultaAcademia implements ConsultaAcademiaInterface {
 
     @Override
     public String gerarRelatorioAluno() {
-        return gerarRelatorioGenerico("Aluno", RepositorioAcademia.alunos);
+        return gerarRelatorioGenerico("Aluno", repositorioAcademia.getAlunos());
     }
 
     @Override
     public String gerarRelatorioInstrutor() {
-        return gerarRelatorioGenerico("Instrutor", RepositorioAcademia.instrutores);
+        return gerarRelatorioGenerico("Instrutor", repositorioAcademia.getInstrutores());
     }
 
     @Override
@@ -45,13 +46,17 @@ public class ConsultaAcademia implements ConsultaAcademiaInterface {
 
     @Override
     public BigDecimal lucroPorAno(int year) {
-        if (year < 2014 && year > LocalDate.now().getYear()) { // registro mais antigo -> 2014
+        if (year < 2014 || year > LocalDate.now().getYear()) { // registro mais antigo -> 2014
             throw new IllegalArgumentException("Ano inválido!");
         }
 
+        //1. Ele entrou antes ou durante aquele ano.
+        // 2. E (ele ainda está ativo OU ele cancelou depois daquele ano).
         return calcularDiferencaComFiltragem(
-                a -> !a.isCancelouMatricula() && a.getDataDeInclusao().getYear() <= year,
-                i -> !i.isCancelouMatricula() && i.getDataDeInclusao().getYear() <= year
+                a -> a.getDataDeInclusao().getYear() <= year &&
+                        (!a.isCancelouMatricula() || a.getDataDeCancelamento().getYear() > year),
+                i -> i.getDataDeInclusao().getYear() <= year &&
+                        (!i.isCancelouMatricula() || i.getDataDeCancelamento().getYear() > year)
         );
     }
 
@@ -75,15 +80,13 @@ public class ConsultaAcademia implements ConsultaAcademiaInterface {
     }
 
     private BigDecimal calcularDiferencaComFiltragem(Predicate<? super Aluno> filterParamAluno, Predicate<? super Instrutor> filterParamInstrutor) {
-        int totalAlunosInt = RepositorioAcademia.alunos.stream()
+        BigDecimal totalAlunos = repositorioAcademia.getAlunos().stream()
                 .filter(filterParamAluno)
                 .map(Aluno::getPlano)
-                .mapToInt(PlanoTreino::getValor)
-                .sum();
+                .map(PlanoTreino::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalAlunos = BigDecimal.valueOf(totalAlunosInt);
-
-        BigDecimal totalInstrutor = RepositorioAcademia.instrutores.stream()
+        BigDecimal totalInstrutor = repositorioAcademia.getInstrutores().stream()
                 .filter(filterParamInstrutor)
                 .map(Instrutor::getSalario)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

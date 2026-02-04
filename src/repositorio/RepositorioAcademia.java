@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepositorioAcademia {
-    public static final List<Aluno> alunos = new ArrayList<>(List.of(
+    private static final List<Aluno> alunos = new ArrayList<>(List.of(
             // --- 1. MATRÍCULAS RECENTES (2026) ---
             new Aluno("Lucas Ferreira", "123.456.789-00", Sexo.MASCULINO, "(11) 99999-0001", 24, LocalDate.of(2026, 1, 15), "2026001", PlanoTreino.ELITE, FrequenciaPagamento.MENSAL),
             new Aluno("Mariana Souza", "234.567.890-11", Sexo.FEMININO, "(21) 98888-0002", 29, LocalDate.of(2026, 1, 20), "2026002", PlanoTreino.BASIC, FrequenciaPagamento.ANUAL),
@@ -131,7 +131,7 @@ public class RepositorioAcademia {
 
     ));
 
-    public static final List<Instrutor> instrutores = new ArrayList<>(List.of(
+    private static final List<Instrutor> instrutores = new ArrayList<>(List.of(
             // --- 2026 (Novos Contratados) ---
             new Instrutor("Amanda Vasconcelos", "111.111.111-11", Sexo.FEMININO, "(11) 99900-1111", 26, LocalDate.of(2026, 1, 10), "INST2601", 30, ModalidadeTreino.MUSCULACAO, new BigDecimal("1621.00")),
             new Instrutor("Bernardo Silva", "222.222.222-22", Sexo.MASCULINO, "(21) 98800-2222", 28, LocalDate.of(2026, 1, 15), "INST2602", 40, ModalidadeTreino.CROSSFIT, new BigDecimal("1621.00")),
