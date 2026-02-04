@@ -1,8 +1,8 @@
-package interfaces;
+package service;
 
 import java.math.BigDecimal;
 
-public interface ConsultaAcademiaInterface {
+public interface ConsultaAcademiaService {
     String gerarRelatorioTudo();
     String gerarRelatorioAluno();
     String gerarRelatorioInstrutor();

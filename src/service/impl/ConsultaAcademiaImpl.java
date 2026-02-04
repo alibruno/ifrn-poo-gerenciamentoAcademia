@@ -1,11 +1,11 @@
-package service;
+package service.impl;
 
 import dominio.Aluno;
 import dominio.Contrato;
 import dominio.Instrutor;
 import dominio.enums.PlanoTreino;
-import interfaces.ConsultaAcademiaInterface;
 import repositorio.RepositorioAcademia;
+import service.ConsultaAcademiaService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,12 +14,16 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class ConsultaAcademia implements ConsultaAcademiaInterface {
-    RepositorioAcademia repositorioAcademia = new RepositorioAcademia();
+public class ConsultaAcademiaImpl implements ConsultaAcademiaService {
+    private final RepositorioAcademia repositorio;
+
+    public ConsultaAcademiaImpl(RepositorioAcademia repositorio) {
+        this.repositorio = repositorio;
+    }
 
     @Override
     public String gerarRelatorioTudo() {
-        return "Total: " + (repositorioAcademia.getAlunos().size() + repositorioAcademia.getInstrutores().size()) +
+        return "Total: " + (this.repositorio.getAlunos().size() + this.repositorio.getInstrutores().size()) +
                 "\n-----------------------------------\n" +
                 gerarRelatorioAluno() +
                 "\n-----------------------------------\n" +
@@ -28,12 +32,12 @@ public class ConsultaAcademia implements ConsultaAcademiaInterface {
 
     @Override
     public String gerarRelatorioAluno() {
-        return gerarRelatorioGenerico("Aluno", repositorioAcademia.getAlunos());
+        return gerarRelatorioGenerico("Aluno", this.repositorio.getAlunos());
     }
 
     @Override
     public String gerarRelatorioInstrutor() {
-        return gerarRelatorioGenerico("Instrutor", repositorioAcademia.getInstrutores());
+        return gerarRelatorioGenerico("Instrutor", this.repositorio.getInstrutores());
     }
 
     @Override
@@ -74,19 +78,19 @@ public class ConsultaAcademia implements ConsultaAcademiaInterface {
 
     private <T extends Contrato> String gerarRelatorioGenerico(String nome, List<T> list) {
         Map<Boolean, List<T>> mapa = gerarMapaCancelouOuNao(list);
-        return "Total de " + nome + ": " + list.size() +
-                "\n" + nome + " ativos (" + mapa.get(false).size() + "):\n" + formatarLista(mapa.get(false)) +
-                "\n\n" + nome + " inativos (" + mapa.get(true).size() + "):\n" + formatarLista(mapa.get(true));
+        return "Total de '" + nome + "': " + list.size() +
+                "\n'" + nome + "' ativos (" + mapa.get(false).size() + "):\n" + formatarLista(mapa.get(false)) +
+                "\n\n'" + nome + "' inativos (" + mapa.get(true).size() + "):\n" + formatarLista(mapa.get(true));
     }
 
     private BigDecimal calcularDiferencaComFiltragem(Predicate<? super Aluno> filterParamAluno, Predicate<? super Instrutor> filterParamInstrutor) {
-        BigDecimal totalAlunos = repositorioAcademia.getAlunos().stream()
+        BigDecimal totalAlunos = this.repositorio.getAlunos().stream()
                 .filter(filterParamAluno)
                 .map(Aluno::getPlano)
                 .map(PlanoTreino::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalInstrutor = repositorioAcademia.getInstrutores().stream()
+        BigDecimal totalInstrutor = this.repositorio.getInstrutores().stream()
                 .filter(filterParamInstrutor)
                 .map(Instrutor::getSalario)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
