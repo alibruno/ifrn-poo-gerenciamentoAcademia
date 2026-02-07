@@ -15,7 +15,7 @@ public enum FrequenciaPagamento {
 
     public static FrequenciaPagamento frequenciaPagamentoPorString(String nome) {
         for (FrequenciaPagamento frequenciaPagamento : values()) {
-            if (frequenciaPagamento.getNome().equals(nome)) {
+            if (frequenciaPagamento.getNome().equalsIgnoreCase(nome)) {
                 return frequenciaPagamento;
             }
         }

@@ -17,7 +17,7 @@ public enum PlanoTreino {
 
     public static PlanoTreino planoTreinoPorString(String nome) {
         for (PlanoTreino planoTreino : values()) {
-            if (planoTreino.getNome().equals(nome)) {
+            if (planoTreino.getNome().equalsIgnoreCase(nome)) {
                 return planoTreino;
             }
         }

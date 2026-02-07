@@ -15,7 +15,7 @@ public enum ModalidadeTreino {
 
     public static ModalidadeTreino modalidadeTreinoPorString(String nome) {
         for (ModalidadeTreino modalidadeTreino : values()) {
-            if (modalidadeTreino.getNome().equals(nome)) {
+            if (modalidadeTreino.getNome().equalsIgnoreCase(nome)) {
                 return modalidadeTreino;
             }
         }

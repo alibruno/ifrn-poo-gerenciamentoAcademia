@@ -5,9 +5,10 @@ import repositorio.RepositorioAcademia;
 import service.impl.ConsultaAcademiaImpl;
 import service.ConsultaAcademiaService;
 
-public class AcademiaTest01 {
+public class ConsultaAcademiaTest01 {
     public static void main(String[] args) {
-        ConsultaAcademiaService consultaAcademiaService = new ConsultaAcademiaImpl(new RepositorioAcademia());
+        RepositorioAcademia repositorioAcademia = new RepositorioAcademia();
+        ConsultaAcademiaService consultaAcademiaService = new ConsultaAcademiaImpl(repositorioAcademia);
         System.out.println(consultaAcademiaService.gerarRelatorioTudo());
         System.out.println(consultaAcademiaService.gerarRelatorioAluno());
         System.out.println(consultaAcademiaService.gerarRelatorioInstrutor());

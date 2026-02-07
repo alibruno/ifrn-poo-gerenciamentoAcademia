@@ -177,4 +177,11 @@ public class RepositorioAcademia {
     public Instrutor buscarInstrutorPorCpf(String cpf) {
         return instrutores.get(cpf);
     }
+
+    public boolean temCpfCadastrado(String cpf) {
+        if (alunos.containsKey(cpf) || instrutores.containsKey(cpf)) {
+            return true;
+        };
+        return false;
+    }
 }

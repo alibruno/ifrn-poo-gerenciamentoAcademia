@@ -12,7 +12,7 @@ public enum Sexo {
 
     public static Sexo sexoPorString(String nome) {
         for (Sexo sexo : values()) {
-            if (sexo.getNome().equals(nome)) {
+            if (sexo.getNome().equalsIgnoreCase(nome)) {
                 return sexo;
             }
         }
