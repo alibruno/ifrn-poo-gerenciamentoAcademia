@@ -9,11 +9,16 @@ import dominio.enums.PlanoTreino;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RepositorioAcademia {
-    private final List<Aluno> alunos = new ArrayList<>(List.of(
+
+    // A chave (String) é o CPF, e o valor é o objeto Aluno
+    private final Map<String, Aluno> alunos = Stream.of(
             // --- 1. MATRÍCULAS RECENTES (2026) ---
             new Aluno("Lucas Ferreira", "123.456.789-00", Sexo.MASCULINO, "(11) 99999-0001", 24, LocalDate.of(2026, 1, 15), "2026001", PlanoTreino.ELITE, FrequenciaPagamento.MENSAL),
             new Aluno("Mariana Souza", "234.567.890-11", Sexo.FEMININO, "(21) 98888-0002", 29, LocalDate.of(2026, 1, 20), "2026002", PlanoTreino.BASIC, FrequenciaPagamento.ANUAL),
@@ -129,9 +134,22 @@ public class RepositorioAcademia {
             new Aluno("Pabllo Vittar", "012.210.012-99", Sexo.FEMININO, "(34) 90099-8877", 30, LocalDate.of(2021, 9, 9), true, LocalDate.of(2025, 1, 10), "2021099", PlanoTreino.PREMIUM, FrequenciaPagamento.SEMESTRAL),
             new Aluno("Renato Aragão", "001.112.223-00", Sexo.MASCULINO, "(21) 90999-8888", 89, LocalDate.of(2019, 1, 15), true, LocalDate.of(2020, 12, 20), "2019015", PlanoTreino.ELITE, FrequenciaPagamento.MENSAL)
 
-    ));
+            // Transforma a lista em Map:
+    ).collect(Collectors.toMap(Aluno::getCPF, Function.identity()));
 
-    private final List<Instrutor> instrutores = new ArrayList<>(List.of(
+    public Map<String, Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public Collection<Aluno> getAlunosValues() {
+        return alunos.values();
+    }
+
+    public Aluno buscarAlunoPorCpf(String cpf) {
+        return alunos.get(cpf);
+    }
+
+    private final Map<String, Instrutor> instrutores = Stream.of(
             // --- 2026 (Novos Contratados) ---
             new Instrutor("Amanda Vasconcelos", "111.111.111-11", Sexo.FEMININO, "(11) 99900-1111", 26, LocalDate.of(2026, 1, 10), "INST2601", 30, ModalidadeTreino.MUSCULACAO, new BigDecimal("1621.00")),
             new Instrutor("Bernardo Silva", "222.222.222-22", Sexo.MASCULINO, "(21) 98800-2222", 28, LocalDate.of(2026, 1, 15), "INST2602", 40, ModalidadeTreino.CROSSFIT, new BigDecimal("1621.00")),
@@ -144,14 +162,19 @@ public class RepositorioAcademia {
             // --- Demitidos/Inativos (Usando construtor longo) ---
             new Instrutor("Ana Maria Braga", "777.888.777-88", Sexo.FEMININO, "(91) 93388-8877", 70, LocalDate.of(2016, 2, 2), true, LocalDate.of(2025, 1, 10), "INST_OLD_2", 20, ModalidadeTreino.DANCA, new BigDecimal("1621.00")),
             new Instrutor("Fausto Silva", "888.999.888-99", Sexo.MASCULINO, "(11) 92299-9988", 72, LocalDate.of(2014, 5, 5), true, LocalDate.of(2023, 6, 1), "INST_OLD_3", 40, ModalidadeTreino.MUSCULACAO, new BigDecimal("1621.00"))
-    ));
 
-    public List<Aluno> getAlunos() {
-        return alunos;
-    }
+            // Transforma a lista em Map:
+    ).collect(Collectors.toMap(Instrutor::getCPF, Function.identity()));
 
-    public List<Instrutor> getInstrutores() {
+    public Map<String, Instrutor> getInstrutores() {
         return instrutores;
     }
 
+    public Collection<Instrutor> getInstrutoresValues() {
+        return instrutores.values();
+    }
+
+    public Instrutor buscarInstrutorPorCpf(String cpf) {
+        return instrutores.get(cpf);
+    }
 }

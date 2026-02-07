@@ -2,6 +2,8 @@ package dominio;
 
 import dominio.enums.Sexo;
 
+import java.util.Objects;
+
 public abstract class Pessoa {
     protected String nome;
     protected String CPF;
@@ -26,6 +28,18 @@ public abstract class Pessoa {
                 ", telefone=" + telefone +
                 ", idade=" + idade +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Pessoa pessoa = (Pessoa) o;
+        return Objects.equals(CPF, pessoa.CPF);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(CPF);
     }
 
     public String getNome() {

@@ -9,6 +9,7 @@ import service.ConsultaAcademiaService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -23,7 +24,7 @@ public class ConsultaAcademiaImpl implements ConsultaAcademiaService {
 
     @Override
     public String gerarRelatorioTudo() {
-        return "Total: " + (this.repositorio.getAlunos().size() + this.repositorio.getInstrutores().size()) +
+        return "Total: " + (this.repositorio.getAlunosValues().size() + this.repositorio.getInstrutoresValues().size()) +
                 "\n-----------------------------------\n" +
                 gerarRelatorioAluno() +
                 "\n-----------------------------------\n" +
@@ -32,12 +33,12 @@ public class ConsultaAcademiaImpl implements ConsultaAcademiaService {
 
     @Override
     public String gerarRelatorioAluno() {
-        return gerarRelatorioGenerico("Aluno", this.repositorio.getAlunos());
+        return gerarRelatorioGenerico("Aluno", this.repositorio.getAlunosValues());
     }
 
     @Override
     public String gerarRelatorioInstrutor() {
-        return gerarRelatorioGenerico("Instrutor", this.repositorio.getInstrutores());
+        return gerarRelatorioGenerico("Instrutor", this.repositorio.getInstrutoresValues());
     }
 
     @Override
@@ -64,19 +65,18 @@ public class ConsultaAcademiaImpl implements ConsultaAcademiaService {
         );
     }
 
-    private <T> String formatarLista(List<T> list) {
+    private <T> String formatarLista(Collection<T> list) {
         return list.stream()
                 .map(T::toString)
                 .collect(Collectors.joining("\n"));
     }
 
-    private <T extends Contrato> Map<Boolean, List<T>> gerarMapaCancelouOuNao(List<T> list) {
-        Map<Boolean, List<T>> mapa = list.stream()
+    private <T extends Contrato> Map<Boolean, List<T>> gerarMapaCancelouOuNao(Collection<T> list) {
+        return list.stream()
                 .collect(Collectors.partitioningBy(Contrato::isCancelouMatricula));
-        return mapa;
     }
 
-    private <T extends Contrato> String gerarRelatorioGenerico(String nome, List<T> list) {
+    private <T extends Contrato> String gerarRelatorioGenerico(String nome, Collection<T> list) {
         Map<Boolean, List<T>> mapa = gerarMapaCancelouOuNao(list);
         return "Total de '" + nome + "': " + list.size() +
                 "\n'" + nome + "' ativos (" + mapa.get(false).size() + "):\n" + formatarLista(mapa.get(false)) +
@@ -84,13 +84,13 @@ public class ConsultaAcademiaImpl implements ConsultaAcademiaService {
     }
 
     private BigDecimal calcularDiferencaComFiltragem(Predicate<? super Aluno> filterParamAluno, Predicate<? super Instrutor> filterParamInstrutor) {
-        BigDecimal totalAlunos = this.repositorio.getAlunos().stream()
+        BigDecimal totalAlunos = this.repositorio.getAlunosValues().stream()
                 .filter(filterParamAluno)
                 .map(Aluno::getPlano)
                 .map(PlanoTreino::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalInstrutor = this.repositorio.getInstrutores().stream()
+        BigDecimal totalInstrutor = this.repositorio.getInstrutoresValues().stream()
                 .filter(filterParamInstrutor)
                 .map(Instrutor::getSalario)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

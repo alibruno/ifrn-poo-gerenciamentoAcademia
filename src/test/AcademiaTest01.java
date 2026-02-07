@@ -1,12 +1,13 @@
 package test;
 
 
+import repositorio.RepositorioAcademia;
 import service.impl.ConsultaAcademiaImpl;
 import service.ConsultaAcademiaService;
 
 public class AcademiaTest01 {
     public static void main(String[] args) {
-        ConsultaAcademiaService consultaAcademiaService = new ConsultaAcademiaImpl();
+        ConsultaAcademiaService consultaAcademiaService = new ConsultaAcademiaImpl(new RepositorioAcademia());
         System.out.println(consultaAcademiaService.gerarRelatorioTudo());
         System.out.println(consultaAcademiaService.gerarRelatorioAluno());
         System.out.println(consultaAcademiaService.gerarRelatorioInstrutor());
