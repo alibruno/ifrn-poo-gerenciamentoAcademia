@@ -115,6 +115,8 @@ O sistema conta com uma classe utilitária robusta (`ValidarAtributos.java`) que
 * **Duplicidade:** O sistema impede o cadastro de um novo contrato (Aluno ou Instrutor) caso o CPF já exista na base de dados (Map).
 * **Tipagem Forte (Enums):** Campos como *Sexo*, *Plano de Treino*, *Frequência* e *Modalidade* são validados contra listas fechadas (Enums), impedindo a inserção de valores arbitrários.
 
+---
+
 ## 📊 Diagrama de Classes
 
 Abaixo está o diagrama UML representando a estrutura das classes, interfaces, records e seus relacionamentos.
