@@ -114,3 +114,194 @@ O sistema conta com uma classe utilitária robusta (`ValidarAtributos.java`) que
 * **Idade:** Impede o cadastro de idades inverossímeis (menores que 0 ou maiores que 100).
 * **Duplicidade:** O sistema impede o cadastro de um novo contrato (Aluno ou Instrutor) caso o CPF já exista na base de dados (Map).
 * **Tipagem Forte (Enums):** Campos como *Sexo*, *Plano de Treino*, *Frequência* e *Modalidade* são validados contra listas fechadas (Enums), impedindo a inserção de valores arbitrários.
+
+## 📊 Diagrama de Classes
+
+Abaixo está o diagrama UML representando a estrutura das classes, interfaces, records e seus relacionamentos.
+
+```mermaid
+classDiagram
+    %% --- PACOTE DOMINIO ---
+    namespace Dominio {
+        class Pessoa {
+            <<abstract>>
+            -String nome
+            -String CPF
+            -String telefone
+            -int idade
+            +getNome()
+            +getCPF()
+        }
+
+        class Contrato {
+            <<abstract>>
+            -LocalDate dataDeInclusao
+            -boolean cancelouMatricula
+            -LocalDate dataDeCancelamento
+            +isCancelouMatricula()
+        }
+
+        class Aluno {
+            -String matricula
+            +toString()
+        }
+
+        class Instrutor {
+            -String ID
+            -int cargaHoraria
+            -BigDecimal salario
+            +toString()
+        }
+
+        class Sexo {
+            <<enumeration>>
+            MASCULINO
+            FEMININO
+        }
+
+        class PlanoTreino {
+            <<enumeration>>
+            BASIC
+            ELITE
+            PREMIUM
+            +getValor()
+        }
+
+        class ModalidadeTreino {
+            <<enumeration>>
+            MUSCULACAO
+            CROSSFIT
+            DANCA
+            FUNCIONAL
+            SPINNING
+        }
+        
+        class FrequenciaPagamento {
+            <<enumeration>>
+            MENSAL
+            ANUAL
+            SEMESTRAL
+        }
+    }
+
+    %% RELACIONAMENTOS DOMINIO
+    Pessoa <|-- Contrato : Herança
+    Contrato <|-- Aluno : Herança
+    Contrato <|-- Instrutor : Herança
+    Pessoa --> Sexo
+    Aluno --> PlanoTreino
+    Aluno --> FrequenciaPagamento
+    Instrutor --> ModalidadeTreino
+
+    %% --- PACOTE REPOSITORIO ---
+    namespace Repositorio {
+        class RepositorioAcademia {
+            -Map~String, Aluno~ alunos
+            -Map~String, Instrutor~ instrutores
+            +salvarAluno(Aluno)
+            +buscarAluno(String)
+            +listarAlunos()
+            +salvarInstrutor(Instrutor)
+            +buscarInstrutor(String)
+            +listarInstrutores()
+        }
+    }
+
+    %% RELACIONAMENTOS REPOSITORIO
+    RepositorioAcademia o-- Aluno : Agregação
+    RepositorioAcademia o-- Instrutor : Agregação
+
+    %% --- PACOTE SERVICE ---
+    namespace Service {
+        class RelatorioAlunoDTO {
+            <<record>>
+            String nome
+            String matricula
+            String plano
+            String status
+            String dataEntrada
+        }
+
+        class RelatorioInstrutorDTO {
+            <<record>>
+            String nome
+            String idFuncional
+            String modalidade
+            int cargaHoraria
+            String status
+        }
+        
+        class ValidarAtributos {
+            <<utility>>
+            +isCPFinvalido(String)
+            +isTelefoneInvalido(String)
+            +isIdadeInvalida(int)
+        }
+
+        %% Interfaces
+        class CadastroContratoService { <<interface>> }
+        class ConsultaContratoService { <<interface>> }
+        class EditarContratoService { <<interface>> }
+        class EncerrarContratoService { <<interface>> }
+        class ExcluirVinculoService { <<interface>> }
+
+        %% Implementações
+        class CadastroContratoImpl
+        class ConsultaContratoImpl
+        class EditarContratoImpl
+        class EncerrarContratoImpl
+        class ExcluirVinculoImpl
+    }
+
+    %% RELACIONAMENTOS SERVICE
+    CadastroContratoService <|.. CadastroContratoImpl : Implementa
+    ConsultaContratoService <|.. ConsultaContratoImpl : Implementa
+    EditarContratoService <|.. EditarContratoImpl : Implementa
+    EncerrarContratoService <|.. EncerrarContratoImpl : Implementa
+    ExcluirVinculoService <|.. ExcluirVinculoImpl : Implementa
+
+    %% Dependências dos Services
+    CadastroContratoImpl --> RepositorioAcademia : Usa
+    ConsultaContratoImpl --> RepositorioAcademia : Usa
+    EditarContratoImpl --> RepositorioAcademia : Usa
+    EncerrarContratoImpl --> RepositorioAcademia : Usa
+    ExcluirVinculoImpl --> RepositorioAcademia : Usa
+    
+    %% Uso de DTOs e Validadores
+    ConsultaContratoImpl ..> RelatorioAlunoDTO : Cria
+    ConsultaContratoImpl ..> RelatorioInstrutorDTO : Cria
+    CadastroContratoImpl ..> ValidarAtributos : Usa
+    EditarContratoImpl ..> ValidarAtributos : Usa
+
+    %% --- PACOTE VIEW ---
+    namespace View {
+        class InputUtils {
+            <<utility>>
+            +lerTexto()
+            +lerInteiro()
+        }
+        
+        class MenuConsole {
+            +iniciar()
+            -menuCadastro()
+            -menuRelatorios()
+        }
+    }
+
+    %% RELACIONAMENTOS VIEW
+    MenuConsole --> CadastroContratoService
+    MenuConsole --> ConsultaContratoService
+    MenuConsole --> EditarContratoService
+    MenuConsole --> EncerrarContratoService
+    MenuConsole --> ExcluirVinculoService
+    MenuConsole ..> InputUtils : Usa
+
+    %% --- MAIN ---
+    class Main {
+        +main(String[])
+    }
+    
+    Main ..> RepositorioAcademia : Instancia
+    Main ..> CadastroContratoImpl : Instancia (Injeção)
+    Main ..> MenuConsole : Instancia e Inicia
+```
