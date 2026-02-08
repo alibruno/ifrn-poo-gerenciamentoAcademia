@@ -4,12 +4,6 @@ import dominio.enums.FrequenciaPagamento;
 import dominio.enums.ModalidadeTreino;
 import dominio.enums.PlanoTreino;
 import dominio.enums.Sexo;
-import dominio.exceptions.FrequenciaPagamentoInvalidoException;
-import dominio.exceptions.ModalidadeTreinoInvalidoException;
-import dominio.exceptions.PlanoTreinoInvalidoException;
-import dominio.exceptions.SexoInvalidoException;
-
-import java.util.Optional;
 
 public class ValidarAtributos {
     public static boolean isIdadeInvalida(int idade) {
@@ -98,18 +92,18 @@ public class ValidarAtributos {
     }
 
     public static Sexo validarSexo(String sexoString) {
-        return Optional.ofNullable(Sexo.sexoPorString(sexoString)).orElseThrow(SexoInvalidoException::new);
+        return Sexo.sexoPorString(sexoString);
     }
 
     public static PlanoTreino validarPlanoTreino(String planoTreinoString) {
-        return Optional.ofNullable(PlanoTreino.planoTreinoPorString(planoTreinoString)).orElseThrow(PlanoTreinoInvalidoException::new);
+        return PlanoTreino.planoTreinoPorString(planoTreinoString);
     }
 
     public static FrequenciaPagamento validarFrequenciaPagamento(String frequenciaPagamentoString) {
-        return Optional.ofNullable(FrequenciaPagamento.frequenciaPagamentoPorString(frequenciaPagamentoString)).orElseThrow(FrequenciaPagamentoInvalidoException::new);
+        return FrequenciaPagamento.frequenciaPagamentoPorString(frequenciaPagamentoString);
     }
 
     public static ModalidadeTreino validarModalidadeTreino(String modalidadeTreinoString) {
-        return Optional.ofNullable(ModalidadeTreino.modalidadeTreinoPorString(modalidadeTreinoString)).orElseThrow(ModalidadeTreinoInvalidoException::new);
+        return ModalidadeTreino.modalidadeTreinoPorString(modalidadeTreinoString);
     }
 }

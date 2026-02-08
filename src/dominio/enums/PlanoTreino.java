@@ -1,42 +1,38 @@
 package dominio.enums;
 
+import dominio.exceptions.PlanoTreinoInvalidoException;
+
 import java.math.BigDecimal;
 
 public enum PlanoTreino {
-    BASIC("BASIC", new BigDecimal("100.00")),
-    ELITE("ELITE", new BigDecimal("120.00")),
-    PREMIUM("PREMIUM", new BigDecimal("150.00"));
+    BASIC(new BigDecimal("100.00")),
+    ELITE(new BigDecimal("120.00")),
+    PREMIUM(new BigDecimal("150.00"));
 
-    private final String nome;
     private final BigDecimal valor;
 
-    PlanoTreino(String nome, BigDecimal valor) {
-        this.nome = nome;
+    PlanoTreino(BigDecimal valor) {
         this.valor = valor;
     }
 
     public static PlanoTreino planoTreinoPorString(String nome) {
         for (PlanoTreino planoTreino : values()) {
-            if (planoTreino.getNome().equalsIgnoreCase(nome)) {
+            if (planoTreino.name().equalsIgnoreCase(nome)) {
                 return planoTreino;
             }
         }
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return "PlanoTreino{" +
-                "nome='" + nome + '\'' +
-                ", valor=" + valor +
-                '}';
-    }
-
-    public String getNome() {
-        return nome;
+        throw new PlanoTreinoInvalidoException("Plano Treino inválido: " + nome);
     }
 
     public BigDecimal getValor() {
         return valor;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "nome='" + name() + '\'' +
+                ", valor=" + valor +
+                '}';
     }
 }

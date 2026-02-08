@@ -1,35 +1,25 @@
 package dominio.enums;
 
+import dominio.exceptions.FrequenciaPagamentoInvalidoException;
+
 public enum FrequenciaPagamento {
-    DIARIA("DIARIA"),
-    MENSAL("MENSAL"),
-    TRIMESTRAL("TRIMESTRAL"),
-    SEMESTRAL("SEMESTRAL"),
-    ANUAL("ANUAL");
-
-    private final String nome;
-
-    FrequenciaPagamento(String nome) {
-        this.nome = nome;
-    }
+    DIARIA,
+    MENSAL,
+    TRIMESTRAL,
+    SEMESTRAL,
+    ANUAL;
 
     public static FrequenciaPagamento frequenciaPagamentoPorString(String nome) {
         for (FrequenciaPagamento frequenciaPagamento : values()) {
-            if (frequenciaPagamento.getNome().equalsIgnoreCase(nome)) {
+            if (frequenciaPagamento.name().equalsIgnoreCase(nome)) {
                 return frequenciaPagamento;
             }
         }
-        return null;
-    }
-
-    public String getNome() {
-        return nome;
+        throw new FrequenciaPagamentoInvalidoException("Frequencia Pagamento inválida: " + nome);
     }
 
     @Override
     public String toString() {
-        return "FrequenciaPagamento{" +
-                "nome='" + nome + '\'' +
-                '}';
+        return '\'' + name() + '\'';
     }
 }

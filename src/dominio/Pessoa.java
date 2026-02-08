@@ -5,11 +5,11 @@ import dominio.enums.Sexo;
 import java.util.Objects;
 
 public abstract class Pessoa {
-    protected String nome;
-    protected String CPF;
-    protected Sexo sexo;
-    protected String telefone;
-    protected int idade;
+    private String nome;
+    private String CPF;
+    private Sexo sexo;
+    private String telefone;
+    private int idade;
 
     public Pessoa(String nome, String CPF, Sexo sexo, String telefone, int idade) {
         this.nome = nome;
@@ -21,13 +21,11 @@ public abstract class Pessoa {
 
     @Override
     public String toString() {
-        return "Pessoa{" +
-                "nome='" + nome + '\'' +
+        return "nome='" + nome + '\'' +
                 ", CPF='" + CPF + '\'' +
                 ", sexo=" + sexo +
                 ", telefone=" + telefone +
-                ", idade=" + idade +
-                '}';
+                ", idade=" + idade;
     }
 
     @Override
@@ -54,16 +52,8 @@ public abstract class Pessoa {
         return CPF;
     }
 
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
-    }
-
     public Sexo getSexo() {
         return sexo;
-    }
-
-    public void setSexo(Sexo sexo) {
-        this.sexo = sexo;
     }
 
     public String getTelefone() {

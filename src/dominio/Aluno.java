@@ -30,26 +30,15 @@ public class Aluno extends Contrato {
     @Override
     public String toString() {
         return "Aluno{" +
-                "matricula='" + matricula + '\'' +
+                super.toString() +
+                ", matricula='" + matricula + '\'' +
                 ", plano=" + plano +
                 ", frequencia=" + frequencia +
-                ", dataDeInclusao=" + dataDeInclusao +
-                ", cancelouMatricula=" + cancelouMatricula +
-                ", dataDeCancelamento=" + dataDeCancelamento +
-                ", nome='" + nome + '\'' +
-                ", CPF='" + CPF + '\'' +
-                ", sexo=" + sexo +
-                ", telefone='" + telefone + '\'' +
-                ", idade=" + idade +
                 '}';
     }
 
     public String getMatricula() {
         return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
     }
 
     public PlanoTreino getPlano() {

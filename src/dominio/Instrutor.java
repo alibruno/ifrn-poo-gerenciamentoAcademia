@@ -33,27 +33,16 @@ public class Instrutor extends Contrato {
     @Override
     public String toString() {
         return "Instrutor{" +
-                "ID='" + ID + '\'' +
+                super.toString() +
+                ", ID='" + ID + '\'' +
                 ", cargaHoraria=" + cargaHoraria +
                 ", modalidadeTreino=" + modalidadeTreino +
                 ", salario=" + salario +
-                ", dataDeInclusao=" + dataDeInclusao +
-                ", cancelouMatricula=" + cancelouMatricula +
-                ", dataDeCancelamento=" + dataDeCancelamento +
-                ", nome='" + nome + '\'' +
-                ", CPF='" + CPF + '\'' +
-                ", sexo=" + sexo +
-                ", telefone='" + telefone + '\'' +
-                ", idade=" + idade +
                 '}';
     }
 
     public String getID() {
         return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
     }
 
     public int getCargaHoraria() {
@@ -79,6 +68,4 @@ public class Instrutor extends Contrato {
     public void setSalario(BigDecimal salario) {
         this.salario = salario;
     }
-
-
 }
