@@ -18,7 +18,7 @@ public class EncerrarContratoImpl implements EncerrarContratoService {
     }
 
     private <T extends Contrato> void encerrarContrato(String CPF, Map<String, T> contratoMap) {
-        T t = Optional.ofNullable(contratoMap.get(CPF)).orElseThrow(() -> new IllegalArgumentException("CPF inválido."));
+        T t = Optional.ofNullable(contratoMap.get(CPF)).orElseThrow(() -> new IllegalArgumentException("CPF inválido ou não encontrado."));
         if (t.isCancelouMatricula()) {
             throw new IllegalArgumentException("Pessoa com contrato já encerrado.");
         }
