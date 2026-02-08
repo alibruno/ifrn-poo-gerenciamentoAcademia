@@ -311,7 +311,7 @@ classDiagram
 
     %% --- PACOTE VIEW ---
     namespace View {
-        class InputUtils {
+        class ClasseUtilitariaEntrada {
             <<utility>>
             +lerTexto(String) String
             +lerInteiro(String) int
@@ -333,7 +333,7 @@ classDiagram
     MenuConsole --> EditarContratoService
     MenuConsole --> EncerrarContratoService
     MenuConsole --> ExcluirVinculoService
-    MenuConsole ..> InputUtils : Usa
+    MenuConsole ..> ClasseUtilitariaEntrada : Usa
 
     %% --- MAIN ---
     class Main {
