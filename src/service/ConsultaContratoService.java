@@ -2,14 +2,14 @@ package service;
 
 import java.math.BigDecimal;
 
-public interface ConsultaAcademiaService {
+public interface ConsultaContratoService {
     String gerarRelatorioTudo();
+
     String gerarRelatorioAluno();
+
     String gerarRelatorioInstrutor();
 
     BigDecimal getLucro();
+
     BigDecimal lucroPorAno(int year);
-//    String lucroPorMes(int month, int year);
-
-
 }

@@ -112,6 +112,4 @@ public class ValidarAtributos {
     public static ModalidadeTreino validarModalidadeTreino(String modalidadeTreinoString) {
         return Optional.ofNullable(ModalidadeTreino.modalidadeTreinoPorString(modalidadeTreinoString)).orElseThrow(ModalidadeTreinoInvalidoException::new);
     }
-
-
 }

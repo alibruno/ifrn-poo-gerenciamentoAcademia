@@ -1,23 +1,22 @@
 package test;
 
 import repositorio.RepositorioAcademia;
-import service.ConsultaAcademiaService;
-import service.EncerrarContratoService;
+import service.ConsultaContratoService;
 import service.ExcluirVinculoService;
-import service.impl.ConsultaAcademiaImpl;
+import service.impl.ConsultaContratoImpl;
 import service.impl.ExcluirVinculoImpl;
 
 public class ExcluirVinculoTest01 {
     public static void main(String[] args) {
         RepositorioAcademia repositorioAcademia = new RepositorioAcademia();
+        ConsultaContratoService consultaContratoService = new ConsultaContratoImpl(repositorioAcademia);
         ExcluirVinculoService excluirVinculoService = new ExcluirVinculoImpl(repositorioAcademia);
-        ConsultaAcademiaService consultaAcademiaService = new ConsultaAcademiaImpl(repositorioAcademia);
-        
-        consultaAcademiaService.gerarRelatorioAluno();
-        
-        System.out.println(consultaAcademiaService.gerarRelatorioAluno());
+
+        consultaContratoService.gerarRelatorioAluno();
+
+        System.out.println(consultaContratoService.gerarRelatorioAluno());
         excluirVinculoService.excluirVinculoAluno("654.456.789-44");
-        System.out.println(consultaAcademiaService.gerarRelatorioAluno());
+        System.out.println(consultaContratoService.gerarRelatorioAluno());
 
         // Teste CPF inválido
         try {
@@ -32,6 +31,5 @@ public class ExcluirVinculoTest01 {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-
     }
 }

@@ -5,7 +5,7 @@ import dominio.Contrato;
 import dominio.Instrutor;
 import dominio.enums.PlanoTreino;
 import repositorio.RepositorioAcademia;
-import service.ConsultaAcademiaService;
+import service.ConsultaContratoService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class ConsultaAcademiaImpl implements ConsultaAcademiaService {
+public class ConsultaContratoImpl implements ConsultaContratoService {
     private final RepositorioAcademia repositorio;
 
-    public ConsultaAcademiaImpl(RepositorioAcademia repositorio) {
+    public ConsultaContratoImpl(RepositorioAcademia repositorio) {
         this.repositorio = repositorio;
     }
 

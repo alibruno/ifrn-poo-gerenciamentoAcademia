@@ -179,9 +179,6 @@ public class RepositorioAcademia {
     }
 
     public boolean temCpfCadastrado(String cpf) {
-        if (alunos.containsKey(cpf) || instrutores.containsKey(cpf)) {
-            return true;
-        };
-        return false;
+        return alunos.containsKey(cpf) || instrutores.containsKey(cpf);
     }
 }

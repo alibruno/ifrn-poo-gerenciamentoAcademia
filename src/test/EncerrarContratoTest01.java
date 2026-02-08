@@ -1,20 +1,20 @@
 package test;
 
 import repositorio.RepositorioAcademia;
-import service.ConsultaAcademiaService;
+import service.ConsultaContratoService;
 import service.EncerrarContratoService;
-import service.impl.ConsultaAcademiaImpl;
+import service.impl.ConsultaContratoImpl;
 import service.impl.EncerrarContratoImpl;
 
 public class EncerrarContratoTest01 {
     public static void main(String[] args) {
         RepositorioAcademia repositorioAcademia = new RepositorioAcademia();
+        ConsultaContratoService consultaContratoService = new ConsultaContratoImpl(repositorioAcademia);
         EncerrarContratoService encerrarContratoService = new EncerrarContratoImpl(repositorioAcademia);
-        ConsultaAcademiaService consultaAcademiaService = new ConsultaAcademiaImpl(repositorioAcademia);
 
-        System.out.println(consultaAcademiaService.gerarRelatorioAluno());
+        System.out.println(consultaContratoService.gerarRelatorioAluno());
         encerrarContratoService.encerrarContratoAluno("654.456.789-44");
-        System.out.println(consultaAcademiaService.gerarRelatorioAluno());
+        System.out.println(consultaContratoService.gerarRelatorioAluno());
 
         // Teste CPF inválido
         try {

@@ -6,7 +6,7 @@ import dominio.enums.PlanoTreino;
 
 import java.time.LocalDate;
 
-public class Aluno extends Contrato{
+public class Aluno extends Contrato {
     private String matricula;
     private PlanoTreino plano;
     private FrequenciaPagamento frequencia;

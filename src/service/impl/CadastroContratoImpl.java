@@ -7,17 +7,16 @@ import dominio.enums.ModalidadeTreino;
 import dominio.enums.PlanoTreino;
 import dominio.enums.Sexo;
 import repositorio.RepositorioAcademia;
-import service.CadastroAcademiaService;
+import service.CadastroContratoService;
 import service.ValidarAtributos;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Optional;
 
-public class CadastroAcademiaImpl implements CadastroAcademiaService {
+public class CadastroContratoImpl implements CadastroContratoService {
     private final RepositorioAcademia repositorio;
 
-    public CadastroAcademiaImpl(RepositorioAcademia repositorio) {
+    public CadastroContratoImpl(RepositorioAcademia repositorio) {
         this.repositorio = repositorio;
     }
 
