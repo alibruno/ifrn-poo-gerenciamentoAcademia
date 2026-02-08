@@ -1,52 +1,116 @@
-# Projeto final da disciplina de POO
+# 🏋️ Sistema de Gerenciamento de Academia
 
-## Sumário
+Projeto desenvolvido para a disciplina de Programação Orientada a Objetos (POO) do **IFRN**. O sistema tem como objetivo gerenciar o fluxo de matrículas de alunos e contratação de instrutores, além de fornecer relatórios administrativos e financeiros.
 
-### 1. [Tema](#1-tema)
+---
 
-### 2. [Especificações](#2-especificações)
-- [2.1. Requisitos Funcionais](#21-requisitos-funcionais)
-- [2.2. Requisitos Técnicos](#22-requisitos-técnicos)
-- [2.3. Funcionalidades Adicionais](#23-funcionalidades-adicionais)
-- [2.4. Entregáveis](#24-entregáveis)
-- [2.5. Critérios de Avaliação](#25-critérios-de-avaliação)
+## 📋 Sobre o Projeto
 
-## 1. Tema
+Este sistema é uma aplicação Java baseada em console que utiliza conceitos avançados de Orientação a Objetos e uma **Arquitetura em Camadas (Layered Architecture)** para garantir organização, escalabilidade e facilidade de manutenção.
 
-### **Sistema de Gerenciamento de Academia**:
-- Cadastro de alunos, instrutores e planos de treino.
-- Controle de frequência e pagamentos.
-- Geração de relatórios de desempenho.
+O foco principal foi a implementação de regras de negócio robustas, validação de dados rigorosa e segurança na exibição de informações sensíveis através de DTOs.
 
-## 2. Especificações
+---
 
-### 2.1. **Requisitos Funcionais**:
-- O sistema deve permitir o **cadastro, edição, exclusão e consulta** das entidades principais (ex: livros, usuários, produtos, etc.).
-- Deve haver funcionalidades específicas para o domínio do sistema (ex: empréstimo de livros, fechamento de pedidos, agendamento de consultas, etc.).
-- O sistema deve gerar **relatórios** ou listagens relevantes (ex: listar todos os livros emprestados, produtos com estoque baixo, consultas agendadas, etc.).
+## ⚙️ Funcionalidades (Requisitos Funcionais)
 
-### 2.2. **Requisitos Técnicos**:
-- **Classes e Objetos**: Criar classes que representem as entidades do sistema, com atributos e métodos bem definidos.
-- **Records**: Usar `records` quando for o caso.
-- **Encapsulamento**: Utilizar atributos privados e métodos públicos (getters e setters) para garantir o encapsulamento.
-- **Herança e Polimorfismo**: Criar hierarquias de classes e utilizar polimorfismo quando aplicável.
-- **Interfaces**: Definir interfaces para comportamentos comuns (ex: `Emprestavel`, `Pagavel`, etc.).
-- **Coleções**: Utilizar coleções como `ArrayList`, `HashMap`, etc., para armazenar listas de objetos.
-- **Exceções**: Implementar tratamento de exceções para situações de erro (ex: tentativa de emprestar um livro já emprestado).
-- ~~**Persistência de Dados**: Salvar e carregar dados em arquivos (ex: `.txt`, `.csv`).~~
+O sistema atende aos seguintes requisitos:
 
-### 2.3. **Funcionalidades Adicionais**:
-- **Validação de Dados**: Validar entradas do usuário (ex: CPF, e-mail, datas, etc.).
-- **Interface de Usuário**: Implementar uma interface simples via console ou, opcionalmente.
+### 1. Gestão de Contratos (CRUD)
+* **Cadastro:** Permite registrar novos **Alunos** (com planos e frequência) e **Instrutores** (com especialidade e carga horária).
+* **Consulta:** Listagem detalhada e resumida de todos os vínculos ativos e inativos.
+* **Edição:** Atualização de dados cadastrais (telefone, nome) e contratuais (plano, salário, carga horária).
+* **Encerramento:** Permite cancelar matrículas ou demitir instrutores, mantendo o histórico (Log de cancelamento).
+* **Exclusão:** Remoção definitiva de registros (apenas para correções administrativas).
 
-### 2.4. **Entregáveis**:
-- **Código Fonte**: O projeto completo, organizado em pacotes e seguindo as boas práticas de POO.
-- **Diagrama**: Diagrama de Classes com todas as classes, interfaces e records do sistema.
-- **Documentação**: Comentários no código e um arquivo `README.md` explicando como executar o projeto e suas funcionalidades.
-- ~~**Relatório**: Um relatório descrevendo as decisões de projeto, desafios enfrentados e soluções implementadas.~~
+### 2. Domínio Específico
+* Gerenciamento de **Modalidades de Treino** (Musculação, CrossFit, etc.).
+* Gerenciamento de **Planos** (Basic, Elite, Premium) com valores diferenciados.
+* Cálculo automático de **Lucro** (Receita de Alunos - Despesa com Instrutores).
 
-### 2.5. **Critérios de Avaliação**:
-- **Funcionalidade**: O sistema deve atender a todos os requisitos funcionais.
-- **Qualidade do Código**: O código deve ser modular, bem organizado e seguir as boas práticas de POO.
-- **Originalidade**: O sistema deve ser único e criativo, evitando cópias de projetos prontos.
-- **Complexidade**: O projeto deve demonstrar um nível adequado de complexidade, utilizando os conceitos aprendidos na disciplina.
+### 3. Relatórios
+* Relatório de Alunos (Protegido via DTO).
+* Relatório de Instrutores (Protegido via DTO).
+* Relatório Financeiro (Lucro total e Lucro histórico por ano).
+
+---
+
+## 🛠️ Tecnologias e Conceitos (Requisitos Técnicos)
+
+O projeto demonstra o uso prático dos pilares da POO e recursos modernos do Java:
+
+* **Java 17+**: Uso de `Records`, `Switch Expressions` e `Streams API`.
+* **Arquitetura**: Separação clara em `Dominio`, `Repositorio`, `Service` e `View`.
+* **Coleções**: Uso intensivo de `HashMap` para busca O(1) (por CPF) e `List`/`Collection` para manipulação de dados.
+* **Herança e Polimorfismo**:
+    * `Pessoa` (Classe Base Abstrata)
+    * `Contrato` (Adiciona regras de vigência) -> estende `Pessoa`
+    * `Aluno` e `Instrutor` -> estendem `Contrato`
+* **Encapsulamento**: Atributos privados, acesso via Getters/Setters e proteção da lista do Repositório (retornando cópias ou collections não modificáveis).
+* **Interfaces**: Aplicação do princípio de Segregação de Interfaces (ISP) nos serviços (`CadastroContratoService`, `ConsultaContratoService`, etc.).
+* **Records**: Utilizados para DTOs (`RelatorioAlunoDTO`), garantindo imutabilidade na transferência de dados.
+* **Tratamento de Exceções**: Exceções personalizadas (`SexoInvalidoException`, `PlanoTreinoInvalidoException`) e try-catch na camada de visualização.
+
+---
+
+## 📂 Estrutura do Projeto
+
+```text
+src/
+├── dominio/           # Regras de Negócio e Entidades (Core)
+│   ├── enums/         # Constantes (Plano, Sexo, Modalidade)
+│   ├── exceptions/    # Exceções Personalizadas
+│   └── ...            # Classes Aluno, Instrutor, Pessoa
+│
+├── repositorio/       # Persistência de Dados
+│   └── RepositorioAcademia.java (Banco de dados em memória)
+│
+├── service/           # Lógica de Aplicação
+│   ├── dto/           # Data Transfer Objects (Objetos de Visualização)
+│   ├── impl/          # Implementação das Regras de Negócio
+│   └── ...            # Interfaces dos Serviços
+│
+├── view/              # Interface com Usuário
+│   ├── util/          # Utilitários de Entrada (Scanner)
+│   └── MenuConsole.java
+│
+└── Main.java          # Ponto de Entrada e Injeção de Dependências
+```
+
+## 🚀 Como Executar
+
+Para rodar o projeto localmente, siga os passos abaixo:
+
+### Pré-requisitos
+* **Java JDK 17** ou superior instalado (Necessário devido ao uso de `records` e `switch expressions`).
+* Uma IDE Java de sua preferência (IntelliJ IDEA, Eclipse, NetBeans ou VS Code).
+
+### Passo a Passo
+1. **Clonar ou Baixar:**
+   Faça o download do código-fonte ou clone este repositório.
+   ```bash
+   git clone https://github.com/alibruno/ifrn-poo-gerenciamentoAcademia.git
+   ```
+2. **Abrir na IDE:**
+   Abra a pasta do projeto na sua IDE. Aguarde a indexação e o reconhecimento do JDK.
+
+3. **Executar:**
+    * Navegue até a pasta `src`.
+    * Localize o arquivo `Main.java`.
+    * Clique com o botão direito no arquivo e selecione a opção **"Run 'Main.main()'"** (ou o botão de Play verde da sua IDE).
+
+4. **Interagir:**
+   O menu interativo aparecerá no console da IDE. Utilize os números para navegar entre as opções.
+   > **Nota:** O sistema inicia com uma carga de dados pré-definida (**Seed Data**) na memória. Isso facilita os testes de relatórios e consultas sem a necessidade de cadastrar dezenas de registros manualmente.
+
+---
+
+## ✅ Validações Implementadas
+
+O sistema conta com uma classe utilitária robusta (`ValidarAtributos.java`) que garante a integridade e consistência dos dados:
+
+* **CPF:** Implementação completa do algoritmo de validação (Módulo 11), verificando os dois dígitos verificadores, tamanho incorreto e rejeitando sequências repetidas (ex: 111.111.111-11).
+* **Telefone:** Verifica o formato para números fixos (10 dígitos) e celulares (11 dígitos), validando também os prefixos de DDD.
+* **Idade:** Impede o cadastro de idades inverossímeis (menores que 0 ou maiores que 100).
+* **Duplicidade:** O sistema impede o cadastro de um novo contrato (Aluno ou Instrutor) caso o CPF já exista na base de dados (Map).
+* **Tipagem Forte (Enums):** Campos como *Sexo*, *Plano de Treino*, *Frequência* e *Modalidade* são validados contra listas fechadas (Enums), impedindo a inserção de valores arbitrários.
