@@ -23,47 +23,41 @@ public class CadastroContratoImpl implements CadastroContratoService {
     @Override
     public void cadastrarAluno(String nome, String CPF, String sexoString, String telefone, int idade, String matricula, String planoString, String frequenciaString) {
         LocalDate dataDeInclusao = LocalDate.now();
-        if (repositorio.temCpfCadastrado(CPF)) {
+        if (repositorio.existeAluno(CPF)) {
             throw new IllegalArgumentException("CPF já cadastrado.");
-        }
-        if (ValidarAtributos.isCPFinvalido(CPF)) {
-            throw new IllegalArgumentException("CPF inválido.");
-        }
-        if (ValidarAtributos.isTelefoneInvalido(telefone)) {
-            throw new IllegalArgumentException("Telefone inválido.");
         }
         if (ValidarAtributos.isIdadeInvalida(idade)) {
             throw new IllegalArgumentException("Idade inválida.");
         }
 
+        String cpfFormatado = ValidarAtributos.formatarCPF(CPF);
+        String telefoneFormatado = ValidarAtributos.formatarTelefone(telefone);
         Sexo sexo = ValidarAtributos.validarSexo(sexoString);
         PlanoTreino plano = ValidarAtributos.validarPlanoTreino(planoString);
         FrequenciaPagamento frequencia = ValidarAtributos.validarFrequenciaPagamento(frequenciaString);
 
-        repositorio.getAlunos().put(CPF, new Aluno(nome, CPF, sexo, telefone, idade, dataDeInclusao, matricula, plano, frequencia));
+        Aluno novoAluno = new Aluno(nome, cpfFormatado, sexo, telefoneFormatado, idade, dataDeInclusao, matricula, plano, frequencia);
+        repositorio.salvarAluno(novoAluno);
     }
 
     @Override
     public void cadastrarInstrutor(String nome, String CPF, String sexoString, String telefone, int idade, String ID, int cargaHoraria, String modalidadeTreinoString, String salarioString) {
         LocalDate dataDeInclusao = LocalDate.now();
-        if (repositorio.temCpfCadastrado(CPF)) {
+        if (repositorio.existeInstrutor(CPF)) {
             throw new IllegalArgumentException("CPF já cadastrado.");
-        }
-        if (ValidarAtributos.isCPFinvalido(CPF)) {
-            throw new IllegalArgumentException("CPF inválido.");
-        }
-        if (ValidarAtributos.isTelefoneInvalido(telefone)) {
-            throw new IllegalArgumentException("Telefone inválido.");
         }
         if (ValidarAtributos.isIdadeInvalida(idade)) {
             throw new IllegalArgumentException("Idade inválida.");
         }
 
+        String cpfFormatado = ValidarAtributos.formatarCPF(CPF);
+        String telefoneFormatado = ValidarAtributos.formatarTelefone(telefone);
         Sexo sexo = ValidarAtributos.validarSexo(sexoString);
         ModalidadeTreino modalidadeTreino = ValidarAtributos.validarModalidadeTreino(modalidadeTreinoString);
         BigDecimal salario = new BigDecimal(salarioString);
 
-        repositorio.getInstrutores().put(CPF, new Instrutor(nome, CPF, sexo, telefone, idade, dataDeInclusao, ID, cargaHoraria, modalidadeTreino, salario));
+        Instrutor novoInstrutor = new Instrutor(nome, cpfFormatado, sexo, telefoneFormatado, idade, dataDeInclusao, ID, cargaHoraria, modalidadeTreino, salario);
+        repositorio.salvarInstrutor(novoInstrutor);
     }
 
 }

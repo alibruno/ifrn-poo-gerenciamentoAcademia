@@ -13,6 +13,19 @@ public class ValidarAtributos {
         return false;
     }
 
+    public static String formatarCPF(String cpf) {
+        if (isCPFinvalido(cpf)) {
+            throw new IllegalArgumentException("CPF inválido.");
+        }
+
+        String numeros = cpf.replaceAll("\\D", "");
+
+        return numeros.replaceFirst(
+                "(\\d{3})(\\d{3})(\\d{3})(\\d{2})",
+                "$1.$2.$3-$4"
+        );
+    }
+
     public static boolean isCPFinvalido(String cpf) {
         cpf = cpf.replaceAll("\\D", "");
 
@@ -54,6 +67,26 @@ public class ValidarAtributos {
         } catch (Exception e) {
             return true;
         }
+    }
+
+    public static String formatarTelefone(String telefone) {
+        if (isTelefoneInvalido(telefone)) {
+            throw new IllegalArgumentException("CPF inválido.");
+        }
+
+        String numeros = telefone.replaceAll("\\D", "");
+
+        return switch (numeros.length()) {
+            case 10 -> numeros.replaceFirst(
+                    "(\\d{2})(\\d{4})(\\d{4})",
+                    "($1) $2-$3"
+            );
+            case 11 -> numeros.replaceFirst(
+                    "(\\d{2})(\\d{5})(\\d{4})",
+                    "($1) $2-$3"
+            );
+            default -> throw new IllegalArgumentException("Telefone inválido");
+        };
     }
 
     public static boolean isTelefoneInvalido(String telefone) {

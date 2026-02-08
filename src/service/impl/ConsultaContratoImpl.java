@@ -24,7 +24,7 @@ public class ConsultaContratoImpl implements ConsultaContratoService {
 
     @Override
     public String gerarRelatorioTudo() {
-        return "Total: " + (this.repositorio.getAlunosValues().size() + this.repositorio.getInstrutoresValues().size()) +
+        return "Total: " + (repositorio.listarAlunos().size() + repositorio.listarInstrutores().size()) +
                 "\n-----------------------------------\n" +
                 gerarRelatorioAluno() +
                 "\n-----------------------------------\n" +
@@ -33,17 +33,17 @@ public class ConsultaContratoImpl implements ConsultaContratoService {
 
     @Override
     public String gerarRelatorioAluno() {
-        return gerarRelatorioGenerico("Aluno", this.repositorio.getAlunosValues());
+        return gerarRelatorioGenerico("Aluno", repositorio.listarAlunos());
     }
 
     @Override
     public String gerarRelatorioInstrutor() {
-        return gerarRelatorioGenerico("Instrutor", this.repositorio.getInstrutoresValues());
+        return gerarRelatorioGenerico("Instrutor", repositorio.listarInstrutores());
     }
 
     @Override
     public BigDecimal getLucro() {
-        return calcularDiferencaComFiltragem(
+        return calcularLucroComFiltragem(
                 a -> !a.isCancelouMatricula(),
                 i -> !i.isCancelouMatricula()
         );
@@ -57,7 +57,7 @@ public class ConsultaContratoImpl implements ConsultaContratoService {
 
         //1. Ele entrou antes ou durante aquele ano.
         // 2. E (ele ainda está ativo OU ele cancelou depois daquele ano).
-        return calcularDiferencaComFiltragem(
+        return calcularLucroComFiltragem(
                 a -> a.getDataDeInclusao().getYear() <= year &&
                         (!a.isCancelouMatricula() || a.getDataDeCancelamento().getYear() > year),
                 i -> i.getDataDeInclusao().getYear() <= year &&
@@ -83,14 +83,14 @@ public class ConsultaContratoImpl implements ConsultaContratoService {
                 "\n\n'" + nome + "' inativos (" + mapa.get(true).size() + "):\n" + formatarLista(mapa.get(true));
     }
 
-    private BigDecimal calcularDiferencaComFiltragem(Predicate<? super Aluno> filterParamAluno, Predicate<? super Instrutor> filterParamInstrutor) {
-        BigDecimal totalAlunos = this.repositorio.getAlunosValues().stream()
+    private BigDecimal calcularLucroComFiltragem(Predicate<? super Aluno> filterParamAluno, Predicate<? super Instrutor> filterParamInstrutor) {
+        BigDecimal totalAlunos = repositorio.listarAlunos().stream()
                 .filter(filterParamAluno)
                 .map(Aluno::getPlano)
                 .map(PlanoTreino::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalInstrutor = this.repositorio.getInstrutoresValues().stream()
+        BigDecimal totalInstrutor = repositorio.listarInstrutores().stream()
                 .filter(filterParamInstrutor)
                 .map(Instrutor::getSalario)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

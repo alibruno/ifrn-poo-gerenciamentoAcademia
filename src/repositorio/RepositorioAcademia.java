@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -137,18 +138,6 @@ public class RepositorioAcademia {
             // Transforma a lista em Map:
     ).collect(Collectors.toMap(Aluno::getCPF, Function.identity()));
 
-    public Map<String, Aluno> getAlunos() {
-        return alunos;
-    }
-
-    public Collection<Aluno> getAlunosValues() {
-        return alunos.values();
-    }
-
-    public Aluno buscarAlunoPorCpf(String cpf) {
-        return alunos.get(cpf);
-    }
-
     private final Map<String, Instrutor> instrutores = Stream.of(
             // --- 2026 (Novos Contratados) ---
             new Instrutor("Amanda Vasconcelos", "111.111.111-11", Sexo.FEMININO, "(11) 99900-1111", 26, LocalDate.of(2026, 1, 10), "INST2601", 30, ModalidadeTreino.MUSCULACAO, new BigDecimal("1621.00")),
@@ -166,19 +155,53 @@ public class RepositorioAcademia {
             // Transforma a lista em Map:
     ).collect(Collectors.toMap(Instrutor::getCPF, Function.identity()));
 
-    public Map<String, Instrutor> getInstrutores() {
-        return instrutores;
+    // O Service manda o objeto, o Repositório decide como salvar (Put, Insert, Save...)
+    public void salvarAluno(Aluno aluno) {
+        alunos.put(aluno.getCPF(), aluno);
     }
 
-    public Collection<Instrutor> getInstrutoresValues() {
+    // Retorna Collection (apenas leitura/visualização)
+    public Collection<Aluno> listarAlunos() {
+        return alunos.values();
+    }
+
+    // Retorna Optional para evitar NullPointerException
+    public Optional<Aluno> buscarAluno(String cpf) {
+        return Optional.ofNullable(alunos.get(cpf));
+    }
+
+    public void deletarAluno(String cpf) {
+        alunos.remove(cpf);
+    }
+
+    public boolean existeAluno(String cpf) {
+        return alunos.containsKey(cpf);
+    }
+
+    public void salvarInstrutor(Instrutor instrutor) {
+        instrutores.put(instrutor.getCPF(), instrutor);
+    }
+
+    // Retorna Collection (apenas leitura/visualização)
+    public Collection<Instrutor> listarInstrutores() {
         return instrutores.values();
     }
 
-    public Instrutor buscarInstrutorPorCpf(String cpf) {
-        return instrutores.get(cpf);
+    // Retorna Optional para evitar NullPointerException
+    public Optional<Instrutor> buscarInstrutor(String cpf) {
+        return Optional.ofNullable(instrutores.get(cpf));
     }
 
-    public boolean temCpfCadastrado(String cpf) {
+    public void deletarInstrutor(String cpf) {
+        instrutores.remove(cpf);
+    }
+
+    public boolean existeInstrutor(String cpf) {
+        return instrutores.containsKey(cpf);
+    }
+
+    // Metodo utilitário global
+    public boolean existePessoa(String cpf) {
         return alunos.containsKey(cpf) || instrutores.containsKey(cpf);
     }
 }

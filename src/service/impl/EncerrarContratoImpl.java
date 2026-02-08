@@ -2,13 +2,11 @@ package service.impl;
 
 import dominio.Aluno;
 import dominio.Contrato;
+import dominio.Instrutor;
 import repositorio.RepositorioAcademia;
 import service.EncerrarContratoService;
 
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class EncerrarContratoImpl implements EncerrarContratoService {
     private final RepositorioAcademia repositorio;
@@ -17,22 +15,25 @@ public class EncerrarContratoImpl implements EncerrarContratoService {
         this.repositorio = repositorio;
     }
 
-    private <T extends Contrato> void encerrarContrato(String CPF, Map<String, T> contratoMap) {
-        T t = Optional.ofNullable(contratoMap.get(CPF)).orElseThrow(() -> new IllegalArgumentException("CPF inválido ou não encontrado."));
-        if (t.isCancelouMatricula()) {
+    private <T extends Contrato> void encerrarContrato(T contratado) {
+        if (contratado.isCancelouMatricula()) {
             throw new IllegalArgumentException("Pessoa com contrato já encerrado.");
         }
-        t.setCancelouMatricula(Boolean.TRUE);
-        t.setDataDeCancelamento(LocalDate.now());
+        contratado.setCancelouMatricula(Boolean.TRUE);
+        contratado.setDataDeCancelamento(LocalDate.now());
     }
 
     @Override
     public void encerrarContratoAluno(String CPF) {
-        encerrarContrato(CPF, repositorio.getAlunos());
+        Aluno aluno = repositorio.buscarAluno(CPF)
+                .orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado."));
+        encerrarContrato(aluno);
     }
 
     @Override
     public void encerrarContratoInstrutor(String CPF) {
-        encerrarContrato(CPF, repositorio.getInstrutores());
+        Instrutor instrutor = repositorio.buscarInstrutor(CPF)
+                .orElseThrow(() -> new IllegalArgumentException("Instrutor não encontrado."));
+        encerrarContrato(instrutor);
     }
 }

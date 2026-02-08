@@ -17,7 +17,7 @@ public class CadastroAcademiaTest01 {
         // Telefone inválido -> exception
 
         // TESTE DE INSERÇÃO
-        //cadastroAcademiaService.cadastrarAluno("Goku", "cpf válido", "Masculino",
+        //cadastroContratoService.cadastrarAluno("Goku", "cpf válido", "Masculino",
         //        "telefone válido", 20, "AB0123", "BASIC", "MENSAL");
 
         System.out.println(consultaContratoService.gerarRelatorioAluno()); // Goku foi inserido!
