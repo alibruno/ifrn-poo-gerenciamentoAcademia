@@ -131,8 +131,10 @@ classDiagram
             -String CPF
             -String telefone
             -int idade
-            +getNome()
-            +getCPF()
+            +getNome() String
+            +getCPF() String
+            +setTelefone(String)
+            +setIdade(int)
         }
 
         class Contrato {
@@ -140,19 +142,24 @@ classDiagram
             -LocalDate dataDeInclusao
             -boolean cancelouMatricula
             -LocalDate dataDeCancelamento
-            +isCancelouMatricula()
+            +isCancelouMatricula() boolean
+            +setCancelouMatricula(boolean)
         }
 
         class Aluno {
             -String matricula
-            +toString()
+            +getPlano() PlanoTreino
+            +getFrequencia() FrequenciaPagamento
+            +toString() String
         }
 
         class Instrutor {
             -String ID
             -int cargaHoraria
             -BigDecimal salario
-            +toString()
+            +getSalario() BigDecimal
+            +getModalidade() ModalidadeTreino
+            +toString() String
         }
 
         class Sexo {
@@ -166,7 +173,7 @@ classDiagram
             BASIC
             ELITE
             PREMIUM
-            +getValor()
+            +getValor() BigDecimal
         }
 
         class ModalidadeTreino {
@@ -190,10 +197,10 @@ classDiagram
     Pessoa <|-- Contrato : Herança
     Contrato <|-- Aluno : Herança
     Contrato <|-- Instrutor : Herança
-    Pessoa --> Sexo
-    Aluno --> PlanoTreino
-    Aluno --> FrequenciaPagamento
-    Instrutor --> ModalidadeTreino
+    Pessoa ..> Sexo : Usa
+    Aluno ..> PlanoTreino : Usa
+    Aluno ..> FrequenciaPagamento : Usa
+    Instrutor ..> ModalidadeTreino : Usa
 
     %% --- PACOTE REPOSITORIO ---
     namespace Repositorio {
@@ -201,11 +208,12 @@ classDiagram
             -Map~String, Aluno~ alunos
             -Map~String, Instrutor~ instrutores
             +salvarAluno(Aluno)
-            +buscarAluno(String)
-            +listarAlunos()
+            +buscarAluno(String) Optional~Aluno~
+            +listarAlunos() Collection~Aluno~
             +salvarInstrutor(Instrutor)
-            +buscarInstrutor(String)
-            +listarInstrutores()
+            +buscarInstrutor(String) Optional~Instrutor~
+            +listarInstrutores() Collection~Instrutor~
+            +existePessoa(String) boolean
         }
     }
 
@@ -235,17 +243,45 @@ classDiagram
         
         class ValidarAtributos {
             <<utility>>
-            +isCPFinvalido(String)
-            +isTelefoneInvalido(String)
-            +isIdadeInvalida(int)
+            +isCPFinvalido(String) boolean
+            +isTelefoneInvalido(String) boolean
+            +isIdadeInvalida(int) boolean
+            +validarSexo(String) Sexo
         }
 
-        %% Interfaces
-        class CadastroContratoService { <<interface>> }
-        class ConsultaContratoService { <<interface>> }
-        class EditarContratoService { <<interface>> }
-        class EncerrarContratoService { <<interface>> }
-        class ExcluirVinculoService { <<interface>> }
+        %% Interfaces com Métodos
+        class CadastroContratoService { 
+            <<interface>> 
+            +cadastrarAluno(String nome, String cpf...)
+            +cadastrarInstrutor(String nome, String cpf...)
+        }
+        
+        class ConsultaContratoService { 
+            <<interface>> 
+            +gerarRelatorioTudo() String
+            +listarRelatorioAlunos() List~RelatorioAlunoDTO~
+            +listarRelatorioInstrutores() List~RelatorioInstrutorDTO~
+            +getLucro() BigDecimal
+            +lucroPorAno(int) BigDecimal
+        }
+        
+        class EditarContratoService { 
+            <<interface>> 
+            +editarCampoAluno(String cpf, String campo, String valor)
+            +editarCampoInstrutor(String cpf, String campo, String valor)
+        }
+        
+        class EncerrarContratoService { 
+            <<interface>> 
+            +encerrarContratoAluno(String cpf)
+            +encerrarContratoInstrutor(String cpf)
+        }
+        
+        class ExcluirVinculoService { 
+            <<interface>> 
+            +excluirVinculoAluno(String cpf)
+            +excluirVinculoInstrutor(String cpf)
+        }
 
         %% Implementações
         class CadastroContratoImpl
@@ -262,31 +298,32 @@ classDiagram
     EncerrarContratoService <|.. EncerrarContratoImpl : Implementa
     ExcluirVinculoService <|.. ExcluirVinculoImpl : Implementa
 
-    %% Dependências dos Services
+    %% Dependências
     CadastroContratoImpl --> RepositorioAcademia : Usa
     ConsultaContratoImpl --> RepositorioAcademia : Usa
     EditarContratoImpl --> RepositorioAcademia : Usa
     EncerrarContratoImpl --> RepositorioAcademia : Usa
     ExcluirVinculoImpl --> RepositorioAcademia : Usa
     
-    %% Uso de DTOs e Validadores
     ConsultaContratoImpl ..> RelatorioAlunoDTO : Cria
     ConsultaContratoImpl ..> RelatorioInstrutorDTO : Cria
     CadastroContratoImpl ..> ValidarAtributos : Usa
-    EditarContratoImpl ..> ValidarAtributos : Usa
 
     %% --- PACOTE VIEW ---
     namespace View {
         class InputUtils {
             <<utility>>
-            +lerTexto()
-            +lerInteiro()
+            +lerTexto(String) String
+            +lerInteiro(String) int
+            +lerDecimalString(String) String
         }
         
         class MenuConsole {
             +iniciar()
             -menuCadastro()
             -menuRelatorios()
+            -menuEdicao()
+            -menuEncerramento()
         }
     }
 
@@ -304,6 +341,6 @@ classDiagram
     }
     
     Main ..> RepositorioAcademia : Instancia
-    Main ..> CadastroContratoImpl : Instancia (Injeção)
-    Main ..> MenuConsole : Instancia e Inicia
+    Main ..> CadastroContratoImpl : Instancia
+    Main ..> MenuConsole : Inicia
 ```
