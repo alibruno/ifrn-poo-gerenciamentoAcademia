@@ -12,11 +12,11 @@ public class ExcluirVinculoTest01 {
         ConsultaContratoService consultaContratoService = new ConsultaContratoImpl(repositorioAcademia);
         ExcluirVinculoService excluirVinculoService = new ExcluirVinculoImpl(repositorioAcademia);
 
-        consultaContratoService.gerarRelatorioAluno();
+        consultaContratoService.listarRelatorioAlunos();
 
-        System.out.println(consultaContratoService.gerarRelatorioAluno());
+        System.out.println(consultaContratoService.listarRelatorioAlunos());
         excluirVinculoService.excluirVinculoAluno("654.456.789-44");
-        System.out.println(consultaContratoService.gerarRelatorioAluno());
+        System.out.println(consultaContratoService.listarRelatorioAlunos());
 
         // Teste CPF inválido
         try {

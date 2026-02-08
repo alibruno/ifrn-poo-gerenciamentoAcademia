@@ -1,13 +1,15 @@
 package service;
 
+import service.dto.RelatorioAlunoDTO;
+import service.dto.RelatorioInstrutorDTO;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface ConsultaContratoService {
-    String gerarRelatorioTudo();
+    List<RelatorioAlunoDTO> listarRelatorioAlunos();
 
-    String gerarRelatorioAluno();
-
-    String gerarRelatorioInstrutor();
+    List<RelatorioInstrutorDTO> listarRelatorioInstrutores();
 
     BigDecimal getLucro();
 

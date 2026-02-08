@@ -6,12 +6,13 @@ import dominio.Instrutor;
 import dominio.enums.PlanoTreino;
 import repositorio.RepositorioAcademia;
 import service.ConsultaContratoService;
+import service.dto.RelatorioAlunoDTO;
+import service.dto.RelatorioInstrutorDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -22,23 +23,22 @@ public class ConsultaContratoImpl implements ConsultaContratoService {
         this.repositorio = repositorio;
     }
 
+    // As listas estão ordenadas por nome
+
     @Override
-    public String gerarRelatorioTudo() {
-        return "Total: " + (repositorio.listarAlunos().size() + repositorio.listarInstrutores().size()) +
-                "\n-----------------------------------\n" +
-                gerarRelatorioAluno() +
-                "\n-----------------------------------\n" +
-                gerarRelatorioInstrutor();
+    public List<RelatorioAlunoDTO> listarRelatorioAlunos() {
+        return repositorio.listarAlunos().stream()
+                .map(RelatorioAlunoDTO::fromEntity)
+                .sorted(Comparator.comparing(RelatorioAlunoDTO::nome))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public String gerarRelatorioAluno() {
-        return gerarRelatorioGenerico("Aluno", repositorio.listarAlunos());
-    }
-
-    @Override
-    public String gerarRelatorioInstrutor() {
-        return gerarRelatorioGenerico("Instrutor", repositorio.listarInstrutores());
+    public List<RelatorioInstrutorDTO> listarRelatorioInstrutores() {
+        return repositorio.listarInstrutores().stream()
+                .map(RelatorioInstrutorDTO::fromEntity)
+                .sorted(Comparator.comparing(RelatorioInstrutorDTO::nome))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -63,24 +63,6 @@ public class ConsultaContratoImpl implements ConsultaContratoService {
                 i -> i.getDataDeInclusao().getYear() <= year &&
                         (!i.isCancelouMatricula() || i.getDataDeCancelamento().getYear() > year)
         );
-    }
-
-    private <T> String formatarLista(Collection<T> list) {
-        return list.stream()
-                .map(T::toString)
-                .collect(Collectors.joining("\n"));
-    }
-
-    private <T extends Contrato> Map<Boolean, List<T>> gerarMapaCancelouOuNao(Collection<T> list) {
-        return list.stream()
-                .collect(Collectors.partitioningBy(Contrato::isCancelouMatricula));
-    }
-
-    private <T extends Contrato> String gerarRelatorioGenerico(String nome, Collection<T> list) {
-        Map<Boolean, List<T>> mapa = gerarMapaCancelouOuNao(list);
-        return "Total de '" + nome + "': " + list.size() +
-                "\n'" + nome + "' ativos (" + mapa.get(false).size() + "):\n" + formatarLista(mapa.get(false)) +
-                "\n\n'" + nome + "' inativos (" + mapa.get(true).size() + "):\n" + formatarLista(mapa.get(true));
     }
 
     private BigDecimal calcularLucroComFiltragem(Predicate<? super Aluno> filterParamAluno, Predicate<? super Instrutor> filterParamInstrutor) {

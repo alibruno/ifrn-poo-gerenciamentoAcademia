@@ -20,6 +20,6 @@ public class CadastroAcademiaTest01 {
         //cadastroContratoService.cadastrarAluno("Goku", "cpf válido", "Masculino",
         //        "telefone válido", 20, "AB0123", "BASIC", "MENSAL");
 
-        System.out.println(consultaContratoService.gerarRelatorioAluno()); // Goku foi inserido!
+        System.out.println(consultaContratoService.listarRelatorioAlunos()); // Goku foi inserido!
     }
 }

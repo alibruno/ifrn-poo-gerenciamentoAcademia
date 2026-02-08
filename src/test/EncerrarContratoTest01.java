@@ -12,9 +12,9 @@ public class EncerrarContratoTest01 {
         ConsultaContratoService consultaContratoService = new ConsultaContratoImpl(repositorioAcademia);
         EncerrarContratoService encerrarContratoService = new EncerrarContratoImpl(repositorioAcademia);
 
-        System.out.println(consultaContratoService.gerarRelatorioAluno());
+        System.out.println(consultaContratoService.listarRelatorioAlunos());
         encerrarContratoService.encerrarContratoAluno("654.456.789-44");
-        System.out.println(consultaContratoService.gerarRelatorioAluno());
+        System.out.println(consultaContratoService.listarRelatorioAlunos());
 
         // Teste CPF inválido
         try {

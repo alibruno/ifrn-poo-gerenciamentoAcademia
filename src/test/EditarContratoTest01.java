@@ -12,9 +12,9 @@ public class EditarContratoTest01 {
         ConsultaContratoService consultaContratoService = new ConsultaContratoImpl(repositorioAcademia);
         EditarContratoService editarContratoService = new EditarContratoImpl(repositorioAcademia);
 
-        System.out.println(consultaContratoService.gerarRelatorioAluno());
+        System.out.println(consultaContratoService.listarRelatorioAlunos());
         editarContratoService.editarCampoAluno("990.001.112-99", "Frequencia Pagamento", "Trimestral");
-        System.out.println(consultaContratoService.gerarRelatorioAluno());
+        System.out.println(consultaContratoService.listarRelatorioAlunos());
     }
 
 }
