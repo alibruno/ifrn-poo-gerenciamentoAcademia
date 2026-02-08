@@ -3,6 +3,7 @@ package view;
 import service.*;
 import service.dto.RelatorioAlunoDTO;
 import service.dto.RelatorioInstrutorDTO;
+import view.util.ClasseUtilitariaEntrada;
 
 import java.math.BigDecimal;
 import java.util.List;
