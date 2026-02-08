@@ -4,7 +4,7 @@ import dominio.enums.Sexo;
 
 import java.time.LocalDate;
 
-public abstract class Contrato extends Pessoa{
+public abstract class Contrato extends Pessoa {
     protected LocalDate dataDeInclusao;
     protected boolean cancelouMatricula;
     protected LocalDate dataDeCancelamento;
@@ -14,6 +14,20 @@ public abstract class Contrato extends Pessoa{
         this.dataDeInclusao = dataDeInclusao;
         this.cancelouMatricula = cancelouMatricula;
         this.dataDeCancelamento = dataDeCancelamento;
+    }
+
+    @Override
+    public String toString() {
+        return "Contrato{" +
+                "dataDeInclusao=" + dataDeInclusao +
+                ", cancelouMatricula=" + cancelouMatricula +
+                ", dataDeCancelamento=" + dataDeCancelamento +
+                ", nome='" + nome + '\'' +
+                ", CPF='" + CPF + '\'' +
+                ", sexo=" + sexo +
+                ", telefone='" + telefone + '\'' +
+                ", idade=" + idade +
+                '}';
     }
 
     public LocalDate getDataDeInclusao() {

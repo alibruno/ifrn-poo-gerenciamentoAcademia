@@ -6,7 +6,7 @@ import dominio.enums.Sexo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Instrutor extends Contrato{
+public class Instrutor extends Contrato {
     private String ID;
     private int cargaHoraria;
     private ModalidadeTreino modalidadeTreino;
@@ -28,6 +28,24 @@ public class Instrutor extends Contrato{
         this.cargaHoraria = cargaHoraria;
         this.modalidadeTreino = modalidadeTreino;
         this.salario = salario;
+    }
+
+    @Override
+    public String toString() {
+        return "Instrutor{" +
+                "ID='" + ID + '\'' +
+                ", cargaHoraria=" + cargaHoraria +
+                ", modalidadeTreino=" + modalidadeTreino +
+                ", salario=" + salario +
+                ", dataDeInclusao=" + dataDeInclusao +
+                ", cancelouMatricula=" + cancelouMatricula +
+                ", dataDeCancelamento=" + dataDeCancelamento +
+                ", nome='" + nome + '\'' +
+                ", CPF='" + CPF + '\'' +
+                ", sexo=" + sexo +
+                ", telefone='" + telefone + '\'' +
+                ", idade=" + idade +
+                '}';
     }
 
     public String getID() {
