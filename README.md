@@ -1,55 +1,25 @@
-# 🏋️ Sistema de Gerenciamento de Academia
+# Sistema de Gerenciamento de Academia
 
-Projeto desenvolvido para a disciplina de Programação Orientada a Objetos (POO) do **IFRN**. O sistema tem como objetivo gerenciar o fluxo de matrículas de alunos e contratação de instrutores, além de fornecer relatórios administrativos e financeiros.
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![POO](https://img.shields.io/badge/POO-Conceitos_Aplicados-blue?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Concluído-success?style=for-the-badge)
 
----
-
-## 📋 Sobre o Projeto
-
-Este sistema é uma aplicação Java baseada em console que utiliza conceitos avançados de Orientação a Objetos e uma **Arquitetura em Camadas (Layered Architecture)** para garantir organização, escalabilidade e facilidade de manutenção.
-
-O foco principal foi a implementação de regras de negócio robustas, validação de dados rigorosa e segurança na exibição de informações sensíveis através de DTOs.
+Um sistema completo de gerenciamento de academia executado via console, focado em aplicar as melhores práticas de **Programação Orientada a Objetos (POO)**. Desenvolvido como projeto de conclusão de disciplina, este software resolve problemas reais de administração fitness, desde o controle de acesso até a gestão financeira e acompanhamento de treinos.
 
 ---
 
-## ⚙️ Funcionalidades (Requisitos Funcionais)
+## Funcionalidades Principais
 
-O sistema atende aos seguintes requisitos:
+O sistema foi desenhado para atender às necessidades operacionais de uma academia moderna:
 
-### 1. Gestão de Contratos (CRUD)
-* **Cadastro:** Permite registrar novos **Alunos** (com planos e frequência) e **Instrutores** (com especialidade e carga horária).
-* **Consulta:** Listagem detalhada e resumida de todos os vínculos ativos e inativos.
-* **Edição:** Atualização de dados cadastrais (telefone, nome) e contratuais (plano, salário, carga horária).
-* **Encerramento:** Permite cancelar matrículas ou demitir instrutores, mantendo o histórico (Log de cancelamento).
-* **Exclusão:** Remoção definitiva de registros (apenas para correções administrativas).
-
-### 2. Domínio Específico
-* Gerenciamento de **Modalidades de Treino** (Musculação, CrossFit, etc.).
-* Gerenciamento de **Planos** (Basic, Elite, Premium) com valores diferenciados.
-* Cálculo automático de **Lucro** (Receita de Alunos - Despesa com Instrutores).
-
-### 3. Relatórios
-* Relatório de Alunos (Protegido via DTO).
-* Relatório de Instrutores (Protegido via DTO).
-* Relatório Financeiro (Lucro total e Lucro histórico por ano).
-
----
-
-## 🛠️ Tecnologias e Conceitos (Requisitos Técnicos)
-
-O projeto demonstra o uso prático dos pilares da POO e recursos modernos do Java:
-
-* **Java 17+**: Uso de `Records`, `Switch Expressions` e `Streams API`.
-* **Arquitetura**: Separação clara em `Dominio`, `Repositorio`, `Service` e `View`.
-* **Coleções**: Uso intensivo de `HashMap` para busca O(1) (por CPF) e `List`/`Collection` para manipulação de dados.
-* **Herança e Polimorfismo**:
-    * `Pessoa` (Classe Base Abstrata)
-    * `Contrato` (Adiciona regras de vigência) -> estende `Pessoa`
-    * `Aluno` e `Instrutor` -> estendem `Contrato`
-* **Encapsulamento**: Atributos privados, acesso via Getters/Setters e proteção da lista do Repositório (retornando cópias ou collections não modificáveis).
-* **Interfaces**: Aplicação do princípio de Segregação de Interfaces (ISP) nos serviços (`CadastroContratoService`, `ConsultaContratoService`, etc.).
-* **Records**: Utilizados para DTOs (`RelatorioAlunoDTO`), garantindo imutabilidade na transferência de dados.
-* **Tratamento de Exceções**: Exceções personalizadas (`SexoInvalidoException`, `PlanoTreinoInvalidoException`) e try-catch na camada de visualização.
+- **Gestão de Entidades:** Cadastro, edição, exclusão e consulta de Alunos, Instrutores e Planos de Treino (ex: Musculação, Calistenia, Crossfit).
+- **Controle Operacional:** - Registro de frequência diária.
+    - Processamento e histórico de pagamentos de mensalidades.
+- **Relatórios Gerenciais:** Geração de listagens estratégicas, como:
+    - Alunos inadimplentes.
+    - Relatório de desempenho e frequência de alunos.
+    - Instrutores e suas respectivas especialidades.
+- **Validação de Dados:** Sistema robusto que previne entradas inválidas (ex: validação de formato de CPF, e-mail e datas).
 
 ---
 
@@ -57,69 +27,30 @@ O projeto demonstra o uso prático dos pilares da POO e recursos modernos do Jav
 
 ```text
 src/
-├── dominio/           # Regras de Negócio e Entidades (Core)
-│   ├── enums/         # Constantes (Plano, Sexo, Modalidade)
-│   ├── exceptions/    # Exceções Personalizadas
-│   └── ...            # Classes Aluno, Instrutor, Pessoa
+├── dominio/           
+│   ├── enums/
+│   ├── exceptions/
+│   └── ...
 │
-├── repositorio/       # Persistência de Dados
+├── repositorio/       
 │   └── RepositorioAcademia.java (Banco de dados em memória)
 │
-├── service/           # Lógica de Aplicação
-│   ├── dto/           # Data Transfer Objects (Objetos de Visualização)
-│   ├── impl/          # Implementação das Regras de Negócio
-│   └── ...            # Interfaces dos Serviços
+├── service/
+│   ├── dto/
+│   ├── impl/
+│   └── ...
 │
-├── view/              # Interface com Usuário
-│   ├── util/          # Utilitários de Entrada (Scanner)
+├── view/
+│   ├── util/
 │   └── MenuConsole.java
 │
-└── Main.java          # Ponto de Entrada e Injeção de Dependências
+└── Main.java
 ```
-
-## 🚀 Como Executar
-
-Para rodar o projeto localmente, siga os passos abaixo:
-
-### Pré-requisitos
-* **Java JDK 17** ou superior instalado (Necessário devido ao uso de `records` e `switch expressions`).
-* Uma IDE Java de sua preferência (IntelliJ IDEA, Eclipse, NetBeans ou VS Code).
-
-### Passo a Passo
-1. **Clonar ou Baixar:**
-   Faça o download do código-fonte ou clone este repositório.
-   ```bash
-   git clone https://github.com/alibruno/ifrn-poo-gerenciamentoAcademia.git
-   ```
-2. **Abrir na IDE:**
-   Abra a pasta do projeto na sua IDE. Aguarde a indexação e o reconhecimento do JDK.
-
-3. **Executar:**
-    * Navegue até a pasta `src`.
-    * Localize o arquivo `Main.java`.
-    * Clique com o botão direito no arquivo e selecione a opção **"Run 'Main.main()'"** (ou o botão de Play verde da sua IDE).
-
-4. **Interagir:**
-   O menu interativo aparecerá no console da IDE. Utilize os números para navegar entre as opções.
-   > **Nota:** O sistema inicia com uma carga de dados pré-definida (**Seed Data**) na memória. Isso facilita os testes de relatórios e consultas sem a necessidade de cadastrar dezenas de registros manualmente.
-
----
-
-## ✅ Validações Implementadas
-
-O sistema conta com uma classe utilitária robusta (`ValidarAtributos.java`) que garante a integridade e consistência dos dados:
-
-* **CPF:** Implementação completa do algoritmo de validação (Módulo 11), verificando os dois dígitos verificadores, tamanho incorreto e rejeitando sequências repetidas (ex: 111.111.111-11).
-* **Telefone:** Verifica o formato para números fixos (10 dígitos) e celulares (11 dígitos), validando também os prefixos de DDD.
-* **Idade:** Impede o cadastro de idades inverossímeis (menores que 0 ou maiores que 100).
-* **Duplicidade:** O sistema impede o cadastro de um novo contrato (Aluno ou Instrutor) caso o CPF já exista na base de dados (Map).
-* **Tipagem Forte (Enums):** Campos como *Sexo*, *Plano de Treino*, *Frequência* e *Modalidade* são validados contra listas fechadas (Enums), impedindo a inserção de valores arbitrários.
 
 ---
 
 ## 📊 Diagrama de Classes
 
-Abaixo está o diagrama UML representando a estrutura das classes, interfaces, records e seus relacionamentos.
 
 ```mermaid
 classDiagram
@@ -344,3 +275,30 @@ classDiagram
     Main ..> CadastroContratoImpl : Instancia
     Main ..> MenuConsole : Inicia
 ```
+
+---
+
+## 🚀 Como Executar o Projeto
+
+**Pré-requisitos:**
+- Java Development Kit (JDK) 17 ou superior.
+- Git instalado.
+
+**Passo a passo:**
+
+1. Clone o repositório:
+   ```bash
+   git clone [https://github.com/alibruno/ifrn-poo-gerenciamentoAcademia.git](https://github.com/alibruno/ifrn-poo-gerenciamentoAcademia.git)
+   ```
+2. Navegue até o diretório do projeto:
+   ```bash
+   cd ifrn-poo-gerenciamentoAcademia
+   ```
+3. Compile o projeto:
+   ```bash
+   javac -d bin src/**/*.java
+   ```
+4. Execute a classe principal:
+   ```bash
+   java -cp bin Main
+   ```
